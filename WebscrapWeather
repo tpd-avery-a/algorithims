@@ -1,0 +1,59 @@
+package Coeus_Backend_2022;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RETURN_WEATHER_INFO {
+    public static void main(String[] args){
+        tryh();
+    }
+
+    public static void tryh(){
+        try {
+            List list = new ArrayList<>();
+            Document doc = Jsoup.connect("https://www.timeanddate.com/weather/?continent=namerica&sort=6").get();
+            Elements a = doc.select("td");
+            Elements b = doc.getElementsByClass("rbi");
+            //String[] locations = {"Anchorage", "Atlanta", "Chicago", "Denver", "Edmonton", "Guadalajara", "Honolulu", "Houston", "Los Angelos", "Mexico City", "Miami", "Montreal", "New York", "Ottawa", "Pheonix", "San Francisco", "Seattle", "Toronto", "Vancouver", "Washington"};
+            //String[] locations = {"Atlanta","Austin","Boston","Brooklyn","Chicago","Columbus","Dallas","Denver","Houston","Los Angeles","Manhattan","New York","Philadelphia","Phoenix","Queens","San Antonio","San Diego","San Jose","The Bronx","Washington"};
+            //191
+            for (int i=0; i < a.size() - 1; i++) {
+                if(a.get(i).text() != "") {
+                    list.add(a.get(i).text());
+                }
+            }
+            for(int i=0; i < list.size()-2; i++) {
+                String location = list.get(i).toString();
+                i++;
+                String time = list.get(i).toString();
+                i++;
+                String temp = list.get(i).toString();
+
+                System.out.print(location + " " + time + " " + temp + "\n");
+                try {
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO weather(location, timethere, temperature,updated_at,created_at) VALUES('"+location+"','"+time+"','"+temp+"',NOW(),NOW())");
+                    post.executeUpdate();
+                } catch (Exception e) {
+                    System.out.print("fail");
+                    e.printStackTrace();
+                } finally {
+                    System.out.print("Complete");
+                }
+            }
+
+            ////System.out.print(list);
+
+        } catch (Exception e) {
+            //System.out.println("error");
+        }
+    }
+
+
+}
