@@ -1,0 +1,123 @@
+package Coeus_Backend_2022;
+
+import org.json.*;
+import org.jsoup.Jsoup;
+import org.jsoup.UnsupportedMimeTypeException;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+public class RETURN_SPACEX_FLIGHT_INFO {
+    public static void main(String[]args){
+        launches();
+        capsules();
+        //newk();
+    }
+
+    /*
+https://api.spacexdata.com/v3/rockets
+
+     */
+    public static void newk(){
+        try{
+            Document doc = Jsoup.connect("https://api.spacexdata.com/v3/roadster").ignoreContentType(true).get();
+            System.out.print(doc);
+            Elements a = doc.select("body");
+            String b = a.text();
+            System.out.print(b+"\n");
+
+            JSONArray json_arr = new JSONArray(b);
+            JSONObject single_response = (JSONObject) json_arr.get(0); //for single element
+            for(int i=0;i<json_arr.length();i++){         // OR iterate
+                JSONObject tmp = (JSONObject) json_arr.get(i);
+
+
+                System.out.print(tmp.get("mission_name") + "\n");
+                System.out.print(tmp.get("flight_number") + "\n");
+                System.out.print(tmp.get("upcoming") + "\n");
+                System.out.print(tmp.get("launch_year") + "\n");
+                System.out.print(tmp.get("launch_date_utc") + "\n");
+                System.out.print(tmp.get("rocket") + "\n");
+
+            }
+        }catch(UnsupportedMimeTypeException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    public static void launches(){
+        try{
+            Document doc = Jsoup.connect("https://api.spacexdata.com/v4/launches").ignoreContentType(true).get();
+            Elements a = doc.select("body");
+            String b = a.text();
+            System.out.print(b+"\n");
+
+            JSONArray json_arr = new JSONArray(b);
+            JSONObject single_response = (JSONObject) json_arr.get(0); //for single element
+            for(int i=0;i<json_arr.length();i++) {         // OR iterate
+                JSONObject tmp = (JSONObject) json_arr.get(i);
+                String id = tmp.get("id").toString();
+                String static_fire = tmp.get("static_fire_date_utc").toString();
+                String details = tmp.get("details").toString();
+                String flight_number = tmp.get("flight_number").toString();
+
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO spaceExLaunches(id_static_fire,details,flight_number,created_at,updated_at)VALUES('"+id+"','"+static_fire+"','"+details+"','"+flight_number+"',NOW(),NOW())");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+        }catch(UnsupportedMimeTypeException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    public static void capsules(){
+        try{
+            Document doc = Jsoup.connect("https://api.spacexdata.com/v4/capsules").ignoreContentType(true).get();
+            Elements a = doc.select("body");
+            String b = a.text();
+
+            JSONArray json_arr = new JSONArray(b);
+            JSONObject single_response = (JSONObject) json_arr.get(0); //for single element
+            for(int i=0;i<json_arr.length();i++){         // OR iterate
+                JSONObject tmp = (JSONObject) json_arr.get(i);
+
+                String serial = tmp.get("serial").toString();
+                String last_update = tmp.get("last_update").toString();
+                String status = tmp.get("status").toString();
+                String type = tmp.get("type").toString();
+                String reuse_count = tmp.get("reuse_count").toString();
+                String land_Landings = tmp.get("land_landings").toString();
+                String water_Landings = tmp.get("water_landings").toString();
+
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO spaceExCapsules(serial,last_update,status,type,reuse_count,land_landings,water_landings,created_at,updated_at)VALUES('"+serial+"','"+last_update+"','"+status+"','"+type+"','"+reuse_count+"','"+land_Landings+"','"+water_Landings+"',NOW(),NOW())");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+        }catch(UnsupportedMimeTypeException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+}
