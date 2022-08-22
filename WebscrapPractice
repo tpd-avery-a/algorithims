@@ -1,0 +1,585 @@
+package Coeus_Backend_2022;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RETURN_ARTICLE_TITLE_LINK {
+    public static void main(String[] args){
+        trynews();
+    }
+    public static void trynews(){
+        //title + link
+        int failure = 0;
+        String[] alarabia_titles1= news6(3).toArray(new String[0]);
+        String[] links4 = newsLinks6(3).toArray(new String[0]);
+
+        String[] aljazeera_titles1= news6(4).toArray(new String[0]);
+        String[] links5 = newsLinks6(4).toArray(new String[0]);
+
+        String[] bbc_titles1= news6(5).toArray(new String[0]);
+        String[] links6 = newsLinks6(5).toArray(new String[0]);
+
+        String[] cnn_titles1= news6(6).toArray(new String[0]);
+        String[] links7 = newsLinks6(6).toArray(new String[0]);
+
+        String[] fox_titles1= news6(0).toArray(new String[0]);
+        String[] links1 = newsLinks6(0).toArray(new String[0]);
+
+        String[] msnbc_titles1= news6(1).toArray(new String[0]);
+        String[] links2 = newsLinks6(1).toArray(new String[0]);
+
+        String[] sky_titles1= news6(2).toArray(new String[0]);
+        String[] links3 = newsLinks6(2).toArray(new String[0]);
+        System.out.print("\n");
+        try{
+            for(int j=0; j < alarabia_titles1.length; j++){
+                String title = alarabia_titles1[j];
+                String link = links4[j];
+                String station = "Al-Arabyia";
+                if(!title.equals("")
+                        & !title.equals("Gulf")
+                        & !title.equals("More")
+                        & !title.equals("World News")
+                        & !title.equals("Features")
+                        & !title.equals("Middle East")
+                        & !title.equals("Video")
+                        & !title.equals("Latest News")
+                        & !title.equals("Coronavirus")
+                        & !title.equals("Economy")
+                        & !title.equals("Aviation & Transport")
+                        & !title.equals("See full coverage")
+                        & !title.equals("World")
+                        & !title.equals("Editor's Choice")
+                        & !title.equals("Variety")
+                        & !title.equals("Economy")
+                        & !title.equals("Energy")
+                        & !title.equals("Entertainment")
+                        & !title.equals("North Africa")
+                ) {
+                    if(!link.equals("")
+                            & !link.equals("https://english.alarabiya.net/News/gulf")) {
+
+                        System.out.print(" Al ra title : "+title);
+                        System.out.print("\n");
+
+                        System.out.print(" Al ra link : "+link);
+                        System.out.print("\n");
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at) VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                            Thread.sleep(250);
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            failure++;
+        }
+
+        System.out.print("\n");
+        try{
+            for(int j=0; j < aljazeera_titles1.length; j++){
+                String title = aljazeera_titles1[j];
+                String link = links5[j];
+                String station = "Al-Jazeera";
+                if(!title.equals("")
+                        & !title.equals("The Listening Post")
+                        & !title.equals("play")
+                        & !title.equals("OPINIONOPINION,")
+                ) {
+                    if(!link.equals("")) {
+                        System.out.print("Al ja : "+ title);
+                        System.out.print("\n");
+                        System.out.println("Al ja : "+link);
+                        System.out.print("\n");
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at)VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                        }catch(Exception e){
+
+                            e.printStackTrace();
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+
+            e.printStackTrace();
+            failure++;
+        }
+
+        System.out.print("\n");
+        try{
+            for(int j=0; j < bbc_titles1.length; j++) {
+                String title = bbc_titles1[j];
+                String link = links6[j];
+                String station = "BBC";
+                if (!title.equals("")
+                        & !title.equals("News")
+                        & !title.equals("UK")
+                        & !title.equals("Europe")
+                        & !title.equals("World")
+                        & !title.equals("India")
+                        & !title.equals("US & Canada")
+                        & !title.equals("China")
+                        & !title.equals("Asia")
+                        & !title.equals("Africa")
+                        & !title.equals("Comments")
+                        & !title.equals("Business")
+                        & !title.equals("Middle East")
+                        & !title.equals("BBC Sport")
+                        & !title.equals("BBC World News TV")
+                        & !title.substring(0,2).equals("Vid")
+                ) {
+                    if( !link.equals("") & !link.equals("https://english.alarabiya.net/News/world")
+                    ) {
+                        System.out.print("BBC : "+ title);
+                        System.out.print("\n");
+                        System.out.println("BBC : " + link);
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at) VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                        }catch(Exception e){
+
+                            e.printStackTrace();
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            failure++;
+        }
+        try{
+
+            for(int j=2; j < cnn_titles1.length; j++){
+                String title = cnn_titles1[j];
+                String link = links7[j];
+                String station = "CNN";
+
+                if(!title.equals("")
+                        & !title.equals("CNN")
+                        & !title.equals("Listen")
+                        & !title.equals("Go to the full CNN experience")
+                        & !title.equals("Listen to CNN (low-bandwidth usage)")
+                )
+                    if(!link.equals("https://lite.cnn.com/es")
+                            & !link.equals("https://lite.cnn.com/en/audioplayer")){
+
+                        System.out.print("CNN : "+title);
+                        System.out.print("\n");
+                        System.out.println("CNN : "+link);
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at) VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+            }
+        }catch(Exception e){
+            failure++;
+        }
+
+        System.out.print("\n");
+        try{
+            for(int j=0; j < fox_titles1.length; j++){
+                String title = fox_titles1[j];
+                String link = links1[j];
+                String station = "FOX";
+                if(!title.equals(null)
+                        & !title.equals("#")
+                        & !title.equals("")
+                        & !title.equals("https://www.foxnews.com/shows")
+                ) {
+                    if (!link.equals(null)
+                            & !link.equals("exclude[ex]")
+                            & !link.equals("#")) {
+                        System.out.print("FOX : " +title);
+                        System.out.print("\n");
+                        System.out.println("Fox : " +link);
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at) VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                            Thread.sleep(250);
+                        }catch(Exception e){
+
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            failure++;
+        }
+
+        System.out.print("\n");
+        try{
+            for(int j=0; j < msnbc_titles1.length; j++){
+                String title = msnbc_titles1[j];
+                String link = links2[j];
+                System.out.print("Mscnbc"+ title);
+                System.out.print("\n");
+                System.out.println("Msnbc"+ link);
+            }
+        }catch(Exception e){
+            failure++;
+        }
+
+        try{
+            for(int j=0; j < sky_titles1.length; j++){
+                String title = sky_titles1[j];
+                String link = links3[j];
+                String station = "SKY";
+                if( !title.equals("")
+                        & !title.equals("Facebook")
+                        & !title.equals("Twitter")
+                        & !title.equals("YouTube")
+                        & !title.equals("Instagram")
+                ) {
+                    if(!links1.equals("")
+                    ) {
+                        System.out.print("Sky : " + title);
+                        System.out.print("\n");
+                        System.out.println("Sky : "+link);
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO news(title, link, station, updated_at, created_at) VALUES('"+title+"','"+link+"','"+station+"',NOW(),NOW())");
+                            post.executeUpdate();
+                        }catch(Exception e){
+
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+            failure++;
+        }
+
+        System.out.print("\n");
+        System.out.print(failure);
+    }
+
+    public static List<String> newsLinks6(int request){
+        List<String> error = new ArrayList<>();
+        error.add("Sorry a connection could now be made to the server");
+        //fox news links
+        if(request == 0 ){
+            try{
+                Document doc2 = Jsoup.connect("https://www.foxnews.com/us").get();
+                Elements a = doc2.select("a[href]");
+                List<String> foxLinks = new ArrayList<>();
+
+                int j =0;
+                for(int i=0; i< a.size(); i++){
+
+                }
+                return foxLinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //returers news links
+        if(request ==1){
+            try{
+                Document doc2 = Jsoup.connect("https://www.reuters.com/business/").get();
+                Elements b = doc2.select("a[href]");
+                List<String> reutersBusinessLinks = new ArrayList<>();
+                for(int i=0; i < b.size(); i++){
+                    //System.out.println(b.text());
+                    if(i > 59 && i < 92 & i % 2 ==0)
+                        reutersBusinessLinks.add("https://www.reuters.com"+b.get(i).attr("href"));
+                }
+                return reutersBusinessLinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //sky news links
+        if(request ==2){
+            try{
+                Document doc2 = Jsoup.connect("https://news.sky.com/world").get();
+                Elements c = doc2.select("a[href]");
+                List<String> skynewslinks = new ArrayList<>();
+                for(int i=0; i < c.size(); i++){
+                    if(i > 34 && i < 88) {
+                        skynewslinks.add("https://news.sky.com"+c.get(i).attr("href") + "\n");
+                    }
+                }
+                return skynewslinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //al arabiya links
+        if(request ==3){
+            try{
+                Document doc2 = Jsoup.connect("https://english.alarabiya.net/News").get();
+                Elements d = doc2.select("a[href]");
+                List<String> arabiyalinks = new ArrayList<>();
+                for(int i=0; i < d.size(); i++){
+                    if(i > 44 & i < 190) {
+                        arabiyalinks.add("https://english.alarabiya.net"+d.get(i).attr("href"));
+                    }
+                }
+                return arabiyalinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //al jazeera links
+        if(request ==4){
+            try{
+                Document doc2 = Jsoup.connect("https://www.aljazeera.com/us-canada/").get();
+                Elements e = doc2.select("a[href]");
+                List<String> jazeeralinks = new ArrayList<>();
+                for(int i=0; i < e.size(); i++){
+                    if(i < 40 && i > 25) {
+                        jazeeralinks.add("https://www.aljazeera.com"+e.get(i).attr("href") + "\n");
+                    }
+                }
+                return jazeeralinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //bbc links
+        if(request ==5){
+            try{
+                Document doc2 = Jsoup.connect("https://www.bbc.com/news").get();
+                Elements f = doc2.select("a[href]");
+                List<String> bbctitle = new ArrayList<>();
+
+                for(int i=0; i < f.size(); i++){
+                    if(i< 197 && i> 123) {
+                        bbctitle.add("https://www.bbc.com"+f.get(i).attr("href"));
+                    }
+                }
+                return bbctitle;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //cnn links
+        if(request ==6){
+            try{
+                Document doc2 = Jsoup.connect("https://lite.cnn.com/en").get();
+                Elements g = doc2.select("a[href]");
+                List<String> cnnlinks = new ArrayList<>();
+                for(int i=0; i < g.size(); i++){
+                    cnnlinks.add("https://lite.cnn.com" + g.get(i).attr("href"));
+                }
+                return cnnlinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //CNBC Links
+        if(request ==7){
+            try{
+                Document doc2 = Jsoup.connect("https://www.nbcnews.com/business").get();
+                Elements f = doc2.select("a[href]");
+                List<String> cnbclinks = new ArrayList<>();
+                for(int i=0; i < f.size(); i++){
+                    //cnbclinks.add(f.get(i).attr("href"));
+                    if(i > 72 && i < 261 && f.get(i) != null) {
+                        cnbclinks.add((f.get(i).attr("href")));
+                    }
+                }
+                return cnbclinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+
+        return error;
+
+
+    }
+    public static List<String> news6(int request){
+        //Fox, MSNBC, Sky news, Al arabiya, aljazeera, cnn, screen rant, nasa , spacex, tesla,lincoln,bently
+
+        String[] error = {"Sorry a connection could now be made to the server"};
+        //fox news titles
+        if(request ==0){
+            try {
+                Document doc2 = Jsoup.connect("https://www.foxnews.com").get();
+                Elements a = doc2.select("a[href]");
+                List<String> foxNews = new ArrayList<>();
+                int j =0;
+                for(int i=0; i< a.size(); i++){
+
+                }
+                return foxNews;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //msnbc news titles
+        if(request == 1){
+            try{
+                Document doc2 = Jsoup.connect("https://www.reuters.com/business/").get();
+                Elements b = doc2.select("a[href]");
+                List<String> msnbcNews = new ArrayList<>();
+                for(int i=0; i < b.size(); i++){
+                    if( 0 < i)
+                        msnbcNews.add(b.get(i).text());
+                }
+                return msnbcNews;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //sky news titles
+        if(request ==2){
+            try{
+                Document doc2 = Jsoup.connect("https://news.sky.com/world").get();
+                Elements c = doc2.select("a[href]");
+                List<String> skynewstitles = new ArrayList<>();
+                for(int i=0; i < c.size(); i++){
+                    if(i > 34 && i < 88) {
+                        skynewstitles.add(c.get(i).text());
+                    }
+                }
+                return skynewstitles;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //al arabiya titles
+        if(request ==3){
+            try{
+                Document doc2 = Jsoup.connect("https://english.alarabiya.net/News").get();
+                Elements d = doc2.select("a[href]");
+                List<String> arabiyatitles = new ArrayList<>();
+                for(int i=0; i < d.size(); i++){
+                    if(i > 44 & i < 190) {
+                        arabiyatitles.add(d.get(i).text());
+                    }
+                }
+                return arabiyatitles;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //al jazeera titles
+        if(request ==4){
+            try{
+                Document doc2 = Jsoup.connect("https://www.aljazeera.com/us-canada/").get();
+                //Elements e = doc2.getElementsByClass("gc__title");
+                Elements e = doc2.select("a[href]");
+                List<String> jazeeratitles = new ArrayList<>();
+                for(int i=0; i < e.size(); i++){
+                    if(i > 25 && i < 40 ) {
+                        jazeeratitles.add(e.get(i).text());
+                    }
+                }
+                return jazeeratitles;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        //bbc titles
+        if(request ==5){
+            try{
+                Document doc2 = Jsoup.connect("https://www.bbc.com/news").get();
+                Elements d = doc2.getElementsByClass("gs-c-promo-heading");
+                Elements f = doc2.select("a[href]");
+                List<String> bbctitles = new ArrayList<>();
+
+                for(int i=0; i < f.size(); i++){
+                    if(i< 197 && i> 123) {
+                        bbctitles.add(f.get(i).text());
+                    }
+                }
+                return bbctitles;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        //cnn titles
+        if(request ==6){
+            try{
+                Document doc2 = Jsoup.connect("https://lite.cnn.com/en").get();
+                Elements d = doc2.select("li");
+                Elements g = doc2.select("a[href]");
+                List<String> cnntitles = new ArrayList<>();
+                for(int i=0; i < g.size(); i++){
+                    cnntitles.add(g.get(i).text());
+                }
+                return cnntitles;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(request ==7){
+            try{
+                Document doc2 = Jsoup.connect("https://www.nbcnews.com/business").get();
+                Elements f = doc2.select("a[href]");
+                List<String> cnbclinks = new ArrayList<>();
+                for(int i=0; i < f.size(); i++){
+                    if(i > 72 && i < 261 && f.get(i) != null) {
+                        cnbclinks.add(f.get(i).text());
+                    }
+                }
+                return cnbclinks;
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+
+    public static void insert(final String[] item){
+
+        try{
+            Connection conn = SQL_Connection.getConnection();
+            PreparedStatement post = conn.prepareStatement("INSERT INTO TABLENAME(first,last)VALUES('"+item[0]+"','"+item[1]+"')");
+            post.executeUpdate();
+        }catch(Exception e){
+
+        }
+        finally {
+            System.out.print("Complete");
+        }
+    }
+}
