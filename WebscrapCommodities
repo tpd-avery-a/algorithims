@@ -1,0 +1,63 @@
+package Coeus_Backend_2022;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class RETURN_COMMODITIES_INFO {
+    public static void main(String[] args) {
+        //https://www.cnn.com/business/markets/commodities/
+        tryf();
+    }
+    public static void tryf(){
+        try{
+            Document doc = Jsoup.connect("https://tradingeconomics.com/commodities").get();
+            Elements a = doc.select("td");
+            for(int i=0; i < a.size() ; i++) {
+                if (!a.get(i).equals("")
+                        & !a.get(i).equals("")
+                ){
+                    String info = a.get(i).text();
+                    i++;
+;                   String info0 = a.get(i).text();
+                    i++;
+                    String info1 = a.get(i).text();
+                    i++;
+                    String info2 = a.get(i).text();
+                    i++;
+                    String info3 = a.get(i).text();
+                    i++;
+                    String info4 = a.get(i).text();
+                    i++;
+                    String info5 = a.get(i).text();
+                    i++;
+                    String info6 = a.get(i).text();
+
+                    System.out.print(info + " " + info0+ info1+ info2 + info3 + info4 + info5+ info6 +"\n");
+                    try{
+                        Connection conn = SQL_Connection.getConnection();
+                        PreparedStatement post = conn.prepareStatement("INSERT INTO commodities(name, price, day, percent,weekly, monthly, yoy, date, created_at, updated_at)VALUES('"+info+"','"+info0+"','"+info1+"','"+info2+"','"+info3+"','"+info4+"','"+info5+"','"+info6+"',NOW(),NOW())");
+                        post.executeUpdate();
+                    }catch(Exception e){
+
+                    }
+                    finally {
+                        System.out.print("Complete");
+                    }
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }
+}
+
+/*
+styles__CommodityHeader-g4keqx-5 iEsBLW
+styles__CommodityInfo-g4keqx-7 hUbMwY
+styles__CommodityValue-g4keqx-9 styles__CommodityLast-g4keqx-10 eKYGKE
+
+ */
