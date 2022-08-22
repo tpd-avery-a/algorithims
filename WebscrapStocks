@@ -1,0 +1,812 @@
+package Coeus_Backend_2022;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RETURN_STOCK_INFO {
+
+    public static void main(String[] args) throws InterruptedException {
+        getNSNY();
+        //grabNasDaqQuote("aapl");
+        //Every 5 minutes
+        //Grab Stock Information
+        //Place into Database
+        /*
+            Grab stock name, symbol
+                Grab stock info using symbol
+                Insert data into database
+*/
+
+
+        //List<String> c = grabNasDaqQuote("aapl");
+        //List<String> e = nasdaqFinances("aapl");
+
+        //List<String> b = grabNewyorkExchangeName();
+        //List<String> d = grabNewyorkQuote("aapl");
+        // List<String> f = newyorkFinanaces("aapl");
+        // List<String> g = grabusTreasury(); //Doesnt return anything
+        //List<String> h = grabinterestRates();
+        //List<String> z = grabbtcPrices();  //Doesnt return anything
+
+        ///int fg = d.size();
+        //int xc = c.size();
+        }
+
+        public static void getNSNY() throws InterruptedException {
+            List<String> a = grabNASDAQName();
+        for(int i=0; i < a.size(); i++){
+            int finalI = i;
+            Thread thread2 = new Thread(() -> {
+                grabNasDaqQuote(a.get(finalI));
+            });
+            thread2.start();
+            Thread.sleep(3000);
+            System.out.print("\n"+"Symbol Complete: "+a.get(i) + "\n"+ "\n");
+        }
+    }
+/*
+    public static void insert(final String[] item){
+
+        try{
+            Connection conn = Coeus_Backend_2022.SQL_Connection.getConnection();
+            PreparedStatement post = conn.prepareStatement("INSERT INTO TABLENAME(first,last)VALUES('"+item[0]+"','"+item[1]+"')");
+            post.executeUpdate();
+        }catch(Exception e){
+
+        }
+        finally {
+            System.out.print("Complete");
+        }
+    }
+
+ */
+    public static List<String> grabNASDAQName(){
+        try {
+            List <String> test = new ArrayList<>();
+            String[] alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+            for(int i=0; i < alpha.length; i++){
+                int finalI = i;
+
+                    Document doc = null;
+                    try {
+                        doc = Jsoup.connect("https://www.advfn.com/nasdaq/nasdaq.asp?companies="+alpha[finalI]).get();
+                        Elements a = doc.select("td");
+                        Thread[] thread = new Thread[a.size()];
+                            for(int j=11; j < a.size() - 1; j++ ) {
+                                
+                                String name = a.get(j).text();
+                                j++;
+                                String symbol = a.get(j).text();
+                                if (!name.equals("")
+                                        & !symbol.equals("")
+                                ) {
+                                    //System.out.println(name + " " + symbol);
+                                    //test.add(name);
+                                    test.add(symbol);
+                                    int finalJ = j;
+                                    thread[j] = new Thread(() -> {
+                                        try {
+                                            thread[finalJ].sleep(3000);
+                                            grabNasDaqQuote(symbol);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                            throw new RuntimeException(e);
+
+                                        }
+                                    });
+                                    thread[j].start();
+                                    System.out.print("Grabbing Symbol " + j +" : "+ symbol+ " FOR "+ name +"\n");
+                                }
+
+                            }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+            }
+            return test;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        return null;
+    }
+
+
+    public static List<String> grabNewyorkExchangeName(){
+        try {
+            List <String> test = new ArrayList<>();
+            String[] alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+            for(int i=0; i < alpha.length; i++){
+                Document doc = Jsoup.connect("https://www.advfn.com/nyse/newyorkstockexchange.asp?companies="+alpha[i]).get();
+
+                Elements a = doc.select("td");
+                for(int j=11; j < a.size() -1; j++ ){
+                    String temp = a.get(j).text();
+                    j++;
+                    String symbol = a.get(j).text();
+                    if(temp != "" && symbol != "") {
+                        //System.out.println(temp + " " + symbol);
+                        test.add(temp);
+                        test.add(symbol);
+                        try{
+                            Connection conn = SQL_Connection.getConnection();
+                            PreparedStatement post = conn.prepareStatement("INSERT INTO stock_nameNYSE(stock_name, stock_symbol,created_at,updated_at)VALUES('"+temp+"','"+symbol+"',NOW(),NOW())");
+                            post.executeUpdate();
+                        }catch(Exception e){
+                                e.printStackTrace();
+                        }
+                        finally {
+                            System.out.print("Complete");
+                        }
+                    }
+                }
+            }
+            return test;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        return null;
+    }
+
+    public static List<String> grabNasDaqQuote(String stock){
+        Thread thread2 = new Thread(() -> {
+
+        });
+        thread2.start();
+        try {
+
+
+                List<String> infos = new ArrayList<>();
+                Document doc = Jsoup.connect("https://www.advfn.com/stock-market/NASDAQ/"+stock+"/stock-price").get();
+                Elements a = doc.select("td");
+
+                String[] info = {
+                        "Company Name",
+                        "Stock Ticker Symbol",
+                        "Market",
+                        "Type",
+                        "",
+                        "Price Change",
+                        "Change Percent",
+                        "Stock Price",
+                        "Last Traded",
+                        "Open Price",
+                        "Low Price",
+                        "High Price",
+                        "Close Price",
+                        "Prev Close",
+                        "Trades",
+                        "Volume",
+                        "VWAP",
+                        "Dollar Volume",
+                        "Avg Volume",
+                        "52 Week Range"
+                        };
+
+                    int finalIntINfo = 20;
+
+                            System.out.print("      INFORMATION : "+a.get(finalIntINfo).text()+"\n");
+                            String temp = a.get(finalIntINfo).text();
+                            if(!temp.equals("0.00")) {
+                                String CompanyName = a.get(finalIntINfo).text();
+                                System.out.print("Company Name : " + CompanyName + " FOR " + stock + "\n");
+                                finalIntINfo++;
+                                String StockTickerSymbol = a.get(finalIntINfo).text();
+                                System.out.print("Symbol : " + StockTickerSymbol + "\n");
+                                finalIntINfo++;
+                                String Market = a.get(finalIntINfo).text();
+                                System.out.print("Market : " + Market + "\n");
+                                finalIntINfo++;
+                                String Typeg = a.get(finalIntINfo).text();
+                                System.out.print("Type : " + Typeg + "\n");
+                                finalIntINfo++;
+                                String blank = a.get(finalIntINfo).text();
+                                System.out.print("blank : " + blank + "\n");
+                                finalIntINfo++;
+                                String PriceChange = a.get(finalIntINfo).text();
+                                System.out.print("Price Change : " + PriceChange + "\n");
+                                finalIntINfo++;
+                                String ChangePercent = a.get(finalIntINfo).text();
+                                System.out.print("ChangePercent : " + ChangePercent + "\n");
+                                finalIntINfo++;
+                                String StockPrice = a.get(finalIntINfo).text();
+                                System.out.print("Stock Price : " + StockPrice + "\n");
+                                finalIntINfo++;
+                                String LastTraded = a.get(finalIntINfo).text();
+                                System.out.print("Last Traded : " + LastTraded + "\n");
+                                finalIntINfo++;
+                                String OpenPrice = a.get(finalIntINfo).text();
+                                System.out.print("Open Price" + OpenPrice + "\n");
+                                finalIntINfo++;
+                                String LowPrice = a.get(finalIntINfo).text();
+                                System.out.print("Low Price : " + LowPrice + "\n");
+                                finalIntINfo++;
+                                String HighPrice = a.get(finalIntINfo).text();
+                                System.out.print(" HighPrice : " + HighPrice + "\n");
+                                finalIntINfo++;
+                                String ClosePrice = a.get(finalIntINfo).text();
+                                System.out.print(" Close Price : " + ClosePrice + "\n");
+                                finalIntINfo++;
+                                String PrevClose = a.get(finalIntINfo).text();
+                                System.out.print(" Previous Close : " + PrevClose + "\n");
+                                finalIntINfo++;
+                                String Trades = a.get(finalIntINfo).text();
+                                System.out.print(" Trades : " + Trades + "\n");
+                                finalIntINfo++;
+                                String Volume = a.get(finalIntINfo).text();
+                                System.out.print(" Volume : " + Volume + "\n");
+                                finalIntINfo++;
+                                String VWAP = a.get(finalIntINfo).text();
+                                System.out.print("  VWAP : " + VWAP + "\n");
+                                finalIntINfo++;
+                                String DollarVolume = a.get(finalIntINfo).text();
+                                System.out.print(" DollarVolume : " + DollarVolume + "\n");
+                                finalIntINfo++;
+                                String AvgVolume = a.get(finalIntINfo).text();
+                                System.out.print(" Avg Volume : " + AvgVolume + "\n");
+                                finalIntINfo++;
+                                String ftWeekRange = a.get(finalIntINfo).text();
+                                System.out.print("ftWeekRange : " + ftWeekRange + "\n" + "\n" + finalIntINfo + "\n" + "\n");
+
+                                //System.out.println(temp + "\n");
+                                try{
+                                    Connection conn = SQL_Connection.getConnection();
+                                    //PreparedStatement post = conn.prepareStatement("INSERT INTO quote(CompanyName, StockTickerSymbol, Market, Typeg, PriceChange,ChangePercent, StockPrice, LastTraded, OpenPrice, LowPrice, HighPrice, ClosePrice, PrevClose, Trades, Volume, VWAP, DollarVolume, AvgVolume, ftWeekRange) VALUES(\""+CompanyName+"\", \""+ StockTickerSymbol+"\",\""+Market+"\",\""+Typeg+"\",\""+PriceChange+"\",\""+ChangePercent+"\",\""+StockPrice+"\",\""+LastTraded+"\",\""+OpenPrice+"\",\""+LowPrice+"\",\""+HighPrice+"\",\""+ClosePrice+"\",\""+PrevClose+"\",\""+Trades+"\",TABLENAME.\""+Volume+"\""+VWAP+"\",\""+ DollarVolume+"\",\""+AvgVolume+"\",\""+ftWeekRange+"\")");
+                                    PreparedStatement post = conn.prepareStatement("INSERT INTO simple_quote(CompanyName,StockTickerSymbol,Market,Typeg,PriceChange,ChangePercent, StockPrice, LastTraded, OpenPrice, LowPrice, HighPrice, ClosePrice, PrevClose, Trades, Volume, DollarVolume, AvgVolume, ftWeekRange,created_at,updated_at)VALUES('"+CompanyName+"','"+StockTickerSymbol+"','"+Market+"','"+Typeg+"','"+PriceChange+"','"+ChangePercent+"','"+StockPrice+"','"+LastTraded+"','"+OpenPrice+"','"+LowPrice+"','"+HighPrice+"','"+ClosePrice+"','"+PrevClose+"','"+Trades+"','"+Volume+"','"+DollarVolume+"','"+AvgVolume+"','"+ftWeekRange+"',NOW(),NOW());");
+                                    post.executeUpdate();
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+                                finally {
+                                    System.out.print("Complete" + "\n");
+                                }
+                            }
+                return infos;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        return null;
+    }
+    public static List<String> grabNewyorkQuote(String stock){
+        try {
+            List<String> infos = new ArrayList<>();
+            Document doc = Jsoup.connect("https://www.advfn.com/stock-market/NYSE/"+stock+"/stock-price").get();
+            Elements a = doc.select("td");
+
+            String[] info = {
+                    "Company Name",
+                    "Stock Ticker Symbol",
+                    "Market",
+                    "Type",
+                    "",
+                    "Price Change",
+                    "Change Percent",
+                    "Stock Price",
+                    "Last Traded",
+                    "Open Price",
+                    "Low Price",
+                    "High Price",
+                    "Close Price",
+                    "Prev Close",
+                    "Trades",
+                    "Volume",
+                    "VWAP",
+                    "Dollar Volume",
+                    "Avg Volume",
+                    "52 Week Range"
+            };
+            for(int i=20; i < 44; i++){
+
+                if(!a.get(i).equals("")){
+                    String temp = a.get(i).text();
+                    String CompanyName = a.get(i).text();
+                    i++;
+                    String StockTickerSymbol= a.get(i).text();
+                    i++;
+                    String Market = a.get(i).text();
+                    i++;
+                    String  Typeg = a.get(i).text();
+                    i++;
+                    String blank = a.get(i).text();
+                    i++;
+                    String PriceChange = a.get(i).text();
+                    i++;
+                    String ChangePercent = a.get(i).text();
+                    i++;
+                    String StockPrice = a.get(i).text();
+                    i++;
+                    String LastTraded = a.get(i).text();
+                    i++;
+                    String OpenPrice = a.get(i).text();
+                    i++;
+                    String LowPrice = a.get(i).text();
+                    i++;
+                    String HighPrice = a.get(i).text();
+                    i++;
+                    String ClosePrice = a.get(i).text();
+                    i++;
+                    String PrevClose = a.get(i).text();
+                    i++;
+                    String Trades = a.get(i).text();
+                    i++;
+                    String Volume = a.get(i).text();
+                    i++;
+                    String VWAP = a.get(i).text();
+                    i++;
+                    String DollarVolume = a.get(i).text();
+                    i++;
+                    String AvgVolume = a.get(i).text();
+                    i++;
+                    String ftWeekRange = a.get(i).text();
+                    infos.add(temp);
+                    //System.out.println(info[i-20] + " " + temp + "\n");
+                    try{
+                        Connection conn = SQL_Connection.getConnection();
+                        //PreparedStatement post = conn.prepareStatement("INSERT INTO nysequote(CompanyName, StockTickerSymbol, Market, Typeg, PriceChange,ChangePercent, StockPrice, LastTraded, OpenPrice, LowPrice, HighPrice, ClosePrice, PrevClose, Trades, Volume, VWAP, DollarVolume, AvgVolume, ftWeekRange) VALUES(\""+CompanyName+"\", \""+ StockTickerSymbol+"\",\""+Market+"\",\""+Typeg+"\",\""+PriceChange+"\",\""+ChangePercent+"\",\""+StockPrice+"\",\""+LastTraded+"\",\""+OpenPrice+"\",\""+LowPrice+"\",\""+HighPrice+"\",\""+ClosePrice+"\",\""+PrevClose+"\",\""+Trades+"\",TABLENAME.\""+Volume+"\""+VWAP+"\",\""+ DollarVolume+"\",\""+AvgVolume+"\",\""+ftWeekRange+"\")");
+                        PreparedStatement post = conn.prepareStatement("INSERT INTO simple_quote(CompanyName,StockTickerSymbol,Market,Typeg,PriceChange,ChangePercent, StockPrice, LastTraded, OpenPrice, LowPrice, HighPrice, ClosePrice, PrevClose, Trades, Volume, DollarVolume, AvgVolume, ftWeekRange,created_at,updated_at)VALUES('"+CompanyName+"','"+StockTickerSymbol+"','"+Market+"','"+Typeg+"','"+PriceChange+"','"+ChangePercent+"','"+StockPrice+"','"+LastTraded+"','"+OpenPrice+"','"+LowPrice+"','"+HighPrice+"','"+ClosePrice+"','"+PrevClose+"','"+Trades+"','"+Volume+"','"+DollarVolume+"','"+AvgVolume+"','"+ftWeekRange+"',NOW(),NOW());");
+
+                        post.executeUpdate();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    finally {
+                        System.out.print("Complete"+ "\n");
+                    }
+                }
+            }
+            return infos;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        return null;
+    }
+
+    public static List<String> nasdaqFinances(String stock){
+        //stock summary https://www.advfn.com/stock-market/NASDAQ/"+stock+"/financials
+        try {
+            List<String> infos = new ArrayList<>();
+            Document doc = Jsoup.connect("https://www.advfn.com/stock-market/NASDAQ/"+stock+"/financials").get();
+            Elements a = doc.select("td");
+
+            for(int i=0; i < a.size(); i++){
+                String info = a.get(i).text();
+                infos.add(info);
+                //System.out.println(info);
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO TABLENAME(first,last)VALUES()");
+                    post.executeUpdate();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+            return infos;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        /*
+            pull doc
+            new threadx11
+                loop through items
+                    turn into strings
+                    send strings to databased
+
+            Thread thread = new Thread(() -> {
+                System.out.println("Updating Filings");
+
+                     Share information Financials
+                      String marketCap =  ;  Market Cap
+                      String sharesOutstanding =    ; Shares Outstanding
+                      String float = ;              Float
+                      String perFloat =     ;              Percent Float
+                      String shortInterest =    ;              Short interest
+                      String shortPerFloat =    ;              Short Percent Float
+                      String shortIntRatio  =   ;             Short Interest Ratio
+                      String shortIntDate   =   ;              Short Interest Date
+                      String dps =  ;              Latest Fiscal Dividend Per Share
+                      String revenue =  ;              Latest Fiscal Revenue
+                      String eps = ;              Latest Fiscal EPS
+                      String date = ;              Latest Fiscal Date
+                                     try{
+                    Connection conn = Coeus_Backend_2022.SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO shareInformation(marketCap,sharesOutstanding,float,perFloat,shortInterest,shortPerFloat,shortIntRatio,shortIntDate,DPS,Revenue,EPS,date,detail,created_at,updated_at)
+                                                               VALUES('"+marketCap+"','"+sharesOutstanding+"','"+float+"','"+perFloat+"','"+shortInterest+"','"+shortPerFloat+"','"+shortIntRatio+"','"+shortIntDate+"','"+DPS+"','"+Revenue+"',"+EPS+"','"+date+"','"+"Share information"+"',NOW(),NOW())");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+
+            });
+            thread.start();
+
+                                Thread thread = new Thread(() -> {  52 Week High
+                                    52 Week Low
+                                    52 Week High Change
+                                    21 Day Moving Average
+                                    21 Day Extended Moving Average
+                                    50 Day Moving Average
+                                    50 Day Extended moving Average
+                                    200 Day Moving Average
+                                    200 Day Extended Moving Average
+                                    10 Day Average Volume
+                                    20 Day Average Volume
+                                    30 Day Average Volume
+                                    50 Day Average Volume
+                                    Alpha
+                                    Beta
+                                    Standard Deviation
+                                    R2
+                                    7 Day Price Change
+                                    7 Day Percent Change
+                                    21 Day Price Change
+                                    21 Day Percent Change
+                                    30 Day Price Change
+                                    30 Day Percent Change
+                                    Month to Date Price Change
+                                    Month to Date Percent Change
+                                    Quarter to Date Price Change
+                                    Quarter to Date Percent Change
+                                    180 Day Price Change
+                                    180 Day Percent Change
+                                    200 Day Price Change
+                                    200 Day Percent Change
+                                    Year to Date Price Change
+                                    Year to Date Percent Change
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+
+                                Dividends Financials
+                                    Dividend(3 Years)
+                                    Dividend(5 Years)
+                                    Ex Dividend Date
+                                    Dividend Rate
+                                    Dividend Yield
+                                    Payment Cash
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+                                Holders Financials
+                                    Institutions
+                                    Institutional Holdings Date
+                                    Institutional Bought Previous 3 Months
+                                    Institutional Holdings Percent
+                                    Institutional Sold previous 3 Months
+                                    Insider Holdings Date
+                                    Insider Bought Previous 3 Months
+                                    Insider Holders Percent
+                                    Insider Sold Previous 3 Months
+                                    Insider Shared Owned
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+                        Profitability Key Ratios
+                            EBIT Margin
+                            EBITDA Margin
+                            Pre-Tax Project Margin
+                            Profit Margin Count
+                            Gross Margin
+                            Profit Margin TOT
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+                    Valuation Measures  Key Ratios
+                        PE Ratio
+                        Enterprise Value
+                        Price to Sales
+                        Price to Free Cash
+                        PE High Last 5 Years
+                        Price to Book
+                        Price to Cash Flow
+                        PE Low Last 5 Years
+                        Price to Tangible Book
+
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+                    Income Statements  Key Ratios
+                        Revenue
+                        Revenue Per Share
+                        Revenue 3 Years
+                        Revenue 5 Years
+
+            });
+            thread.start();
+
+                    Thread thread = new Thread(() -> {
+                    Management Effectiveness  Key Ratios
+                        Receivable Turnover
+                        Invoice Turnover
+                        Assets Turnover
+                        Return on Assets
+                        Return on Equity
+                        Return on Capital
+            });
+            thread.start();
+            Thread thread = new Thread(() -> {
+
+                    Financial Strength  Key Ratios
+                        Price to Tangible Book
+                        Total Debt to Equity
+                        Int Coverage
+                        Current Ratio
+                        Leverage Ratio
+                        Quick Ratio
+                        Long Term Debt to Capital
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+                    Profile info Profile
+                        Issue Type
+                        SEC Type
+                        Auditor
+                        CEO
+                        Employees
+                        Last Audit
+                        CIK
+                        INdustry
+                        Sector
+                        NAICS
+
+            });
+            thread.start();
+
+            Thread thread = new Thread(() -> {
+             Contact Info Profile
+                        Address
+                        Website
+                        Facsimile
+                        Telephone
+                        Email
+            });
+            thread.start();
+        Financials
+            Share information Financials
+                Market Cap
+                Shares Outstanding
+                Float
+                Percent Float
+                Short interest
+                Short Percent Float
+                Short Interest Ratio
+                Short Interest Date
+                Latest Fiscal Dividend Per Share
+                Latest Fiscal Revenue
+                Latest Fiscal EPS
+                Latest Fiscal Date
+
+            Trading Info Financials
+                52 Week High
+                52 Week Low
+                52 Week High Change
+                21 Day Moving Average
+                21 Day Extended Moving Average
+                50 Day Moving Average
+                50 Day Extended moving Average
+                200 Day Moving Average
+                200 Day Extended Moving Average
+                10 Day Average Volume
+                20 Day Average Volume
+                30 Day Average Volume
+                50 Day Average Volume
+                Alpha
+                Beta
+                Standard Deviation
+                R2
+                7 Day Price Change
+                7 Day Percent Change
+                21 Day Price Change
+                21 Day Percent Change
+                30 Day Price Change
+                30 Day Percent Change
+                Month to Date Price Change
+                Month to Date Percent Change
+                Quarter to Date Price Change
+                Quarter to Date Percent Change
+                180 Day Price Change
+                180 Day Percent Change
+                200 Day Price Change
+                200 Day Percent Change
+                Year to Date Price Change
+                Year to Date Percent Change
+
+            Dividends Financials
+                Dividend(3 Years)
+                Dividend(5 Years)
+                Ex Dividend Date
+                Dividend Rate
+                Dividend Yield
+                Payment Cash
+            Holders Financials
+                Institutions
+                Institutional Holdings Date
+                Institutional Bought Previous 3 Months
+                Institutional Holdings Percent
+                Institutional Sold previous 3 Months
+                Insider Holdings Date
+                Insider Bought Previous 3 Months
+                Insider Holders Percent
+                Insider Sold Previous 3 Months
+                Insider Shared Owned
+        Key Ratios
+            Profitability Key Ratios
+                EBIT Margin
+                EBITDA Margin
+                Pre-Tax Project Margin
+                Profit Margin Count
+                Gross Margin
+                Profit Margin TOT
+            Valuation Measures  Key Ratios
+                PE Ratio
+                Enterprise Value
+                Price to Sales
+                Price to Free Cash
+                PE High Last 5 Years
+                Price to Book
+                Price to Cash Flow
+                PE Low Last 5 Years
+                Price to Tangible Book
+            Income Statements  Key Ratios
+                Revenue
+                Revenue Per Share
+                Revenue 3 Years
+                Revenue 5 Years
+            Management Effectiveness  Key Ratios
+                Receivable Turnover
+                Invoice Turnover
+                Assets Turnover
+                Return on Assets
+                Return on Equity
+                Return on Capital
+
+            Financial Strength  Key Ratios
+                Price to Tangible Book
+                Total Debt to Equity
+                Int Coverage
+                Current Ratio
+                Leverage Ratio
+                Quick Ratio
+                Long Term Debt to Capital
+        Profile
+            Profile info Profile
+                Issue Type
+                SEC Type
+                Auditor
+                CEO
+                Employees
+                Last Audit
+                CIK
+                INdustry
+                Sector
+                NAICS
+            Contact Info Profile
+                Address
+                Website
+                Facsimile
+                Telephone
+                Email
+         */
+        return null;
+    }
+
+    public static List<String> newyorkFinanaces(String stock){
+        //https://www.advfn.com/stock-market/NYSE/"+stock+"/financials
+        try {
+            List<String> infos = new ArrayList<>();
+            Document doc = Jsoup.connect("https://www.advfn.com/stock-market/NYSE/"+stock+"/financials").get();
+            Elements a = doc.select("td");
+
+            for(int i=0; i < a.size(); i++){
+                String info = a.get(i).text();
+                infos.add(info);
+                //System.out.println(info);
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO nasdaq_fin(first,last)VALUES()");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+            return infos;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.print("Error");
+        }
+        return null;
+    }
+
+    public static List<String> grabbtcPrices(){
+        //https://coinmarketcap.com
+        return null;
+    }
+    public static List<String> grabusTreasury(){
+        //https://home.treasury.gov/news/press-releases featured-stories__headline a[href]
+        try {
+            List<String> infos = new ArrayList<>();
+            Document doc = Jsoup.connect("https://home.treasury.gov/news/press-releases?title=&publication-start-date=&publication-end-date=&page=0").get();
+            Elements a = doc.getElementsByClass("date-format");
+            Elements b = doc.getElementsByClass("featured-stories__headline");
+            Elements c = doc.select("h3 > a[href]");
+
+            for(int i=0; i < a.size(); i++){
+                String date = a.get(i).text();
+                String title = b.get(i).text();
+                String link = c.get(i).attr("href");
+
+                infos.add(date + title + " https://home.treasury.gov" + link);
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO nyse_fi(first,last)VALUES()");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            //System.out.print("Error");
+        }
+        return null;
+    }
+    public static List<String> grabinterestRates() {
+        //https://www.global-rates.com/en/interest-rates/central-banks/central-bank-america/fed-interest-rate.aspx td
+        try {
+            List<String> infos = new ArrayList<>();
+            Document doc = Jsoup.connect("https://www.global-rates.com/en/interest-rates/central-banks/central-bank-america/fed-interest-rate.aspx").get();
+            Elements a = doc.select("td");
+
+            for (int i = 0; i < a.size(); i++) {
+                String info = a.get(i).text();
+                infos.add(info);
+                //System.out.println(info);
+                try{
+                    Connection conn = SQL_Connection.getConnection();
+                    PreparedStatement post = conn.prepareStatement("INSERT INTO interest(first,last)VALUES()");
+                    post.executeUpdate();
+                }catch(Exception e){
+
+                }
+                finally {
+                    System.out.print("Complete");
+                }
+            }
+            return infos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            //System.out.print("Error");
+        }
+        return null;
+    }
+
+}
