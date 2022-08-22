@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Top Peaks Development</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css_001.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static',filename='test.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css_001.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static',filename='register_css_001.css') }} ">
+
+
+</head>
+<body>
+
+    <div class="main_container">
+        <div class="nav_container">
+            <div class="logo"> <span class="logo_part_1">TOP PEAKS</span> <br> <span class="logo_part_2">DEVELOPMENT</span></div>
+            <div class="link_Container">
+                <a class="btn blog" href="/blogs">Blog</a>
+                <a class="datacenter btn" href="/data-center-solutions">Datacenter Solutions</a>
+                <a class="softwaredev btn" href="/software-solutions">Software Development Center</a>
+                <a class="webdev btn" href="/web-development-solutions">Web Development Center</a>
+                <a class="cybersec btn" href="/cyber-solutions">Cybersecurity Solutions</a>
+            </div>
+        </div>
+        
+
+        <div class="navContainerTpd">
+
+            <a href="/Dashboard" class="contact btnTpd">Dashboard</a>
+            <a href="/Login_=&%" class="contact btnTpd">Balancesheet</a>
+
+        </div>
+
+
+        <div class="main-con-dash">
+                <div class="form">
+                        <form action="/register_process" class="b_register_form" method="post">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <ul class=flashes>
+                                {% for message in messages %}
+                                <li>{{ message }}</li>
+                                {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% endwith %}
+                            <div class="field">
+                                <label for="">Username : </label>
+                                <input type="text" placeholder="Username" name="uname">
+                            </div>
+
+                            <div class="field">
+                            <label for="">Password : </label>
+                            <input type="text" placeholder="Password" name="pword">
+                            </div>
+
+                            <div class="field">
+                            <label for="">Password 2 : </label>
+                            <input type="text" placeholder="Re-enter Password" name="pword2">
+                            </div>
+
+                            <div class="field">
+                            <label for="">Email : </label>
+                            <input type="text" placeholder="Email" name="email">
+                            </div>
+                            
+                            <div class="field">
+                            <label for="">Email 2 : </label>
+                            <input type="text" placeholder="Re-enter Email" name="email2">
+                            </div>
+                            <input type="submit" value="Register" class="b_register_btn">
+                        </form>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>

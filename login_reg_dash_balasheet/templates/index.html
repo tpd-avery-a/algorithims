@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy| Top Peaks Development</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='test.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css_001.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static',filename='login_css_001.css') }} ">
+
+</head>
+<body>
+    <div class="main_container">
+        
+        <div class="main-con-dash">
+                                                              
+                    <div class="login_container">
+                                <form action="/process-cca-gdpr" class="b_login_form" method="post">
+                                            <div class="field">
+                                                        <label for="">I Under The Rights Provided to me under the CCA.</label>
+                                                        <input type="checkbox" name="california" id="" value="1"> 
+                                            </div>
+                                            <div class="field">
+                                                        <label for="">I Under The Rights Provided to me under the gdpr.</label>
+                                                        <input type="checkbox" name="europe" id="" value="1"> 
+                                            </div>
+                                            <div class="field">
+                                                        <label for="">I agree to the terms and conditions of <a href="" class="">Top Peaks Privacy Policy</a></label>
+                                                        <input type="checkbox" name="top_peaks" id="" value="1"> 
+                                            </div>
+                                            <input type="submit" value="By continuing, I have read and understand the previous policies" class="b_login_btn">
+                                </form>
+                    </div>
+            </div>
+    </div>
+    
+</body>
+</html>

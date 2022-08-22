@@ -1,0 +1,55 @@
+body{
+    background-color: black;
+}
+label{
+    color: white;
+    display: inline-block;
+    float: left;
+}
+.login_container{
+    width: 950px;
+    margin: 16px auto;
+    padding: 16px;
+}
+.b_login_form{
+    width: 500px;
+    margin: 0px auto;
+    border: solid 1px red;
+    margin-top: 200px;
+    margin-bottom: 150px;
+    
+}
+.field{
+    margin: 0px auto;
+    width: 250px;
+    padding: 16px;
+}
+.b_login_un{
+    float: right;
+    height: 16px;
+}
+
+.b_login_pw{
+    float: right;
+    height: 16px;
+}
+.b_login_btn{
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: solid 1px black;
+}
+.b_register_btn{
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: solid 1px black;
+    width: 250px;
+}
+.kiva_logo{
+    color: white;
+}

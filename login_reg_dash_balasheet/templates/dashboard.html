@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Top Peaks Development</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='dashboard_css.css') }} ">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css_001.css') }} ">
+
+</head>
+<body>
+    <div class="main_container">
+        <div class="nav_container">
+            <div class="logo"> <span class="logo_part_1">TOP PEAKS</span> <br> <span class="logo_part_2">DEVELOPMENT</span></div>
+            <div class="link_Container">
+                <a class="btn blog" href="/blogs">Blog</a>
+                <a class="datacenter btn" href="/data-center-solutions">Datacenter Solutions</a>
+                <a class="softwaredev btn" href="/software-solutions">Software Development Center</a>
+                <a class="webdev btn" href="/web-development-solutions">Web Development Center</a>
+                <a class="cybersec btn" href="/cyber-solutions">Cybersecurity Solutions</a>
+            </div>
+        </div>
+
+        
+        <div class="navContainerTpd">
+
+            <a href="/Dashboard" class="contact btnTpd">Dashboard</a>
+            <a href="/Login_=&%" class="contact btnTpd">Balancesheet</a>
+
+        </div>
+        
+        
+        <div class="main-con-dash">
+    
+            <marquee behavior="scroll" direction="left">
+                {% for item in all%}
+                |   {{item.title}} 
+                {% endfor %} 
+            </marquee>
+            <marquee behavior="scroll" direction="left">
+                {% for item in all %}
+                    {{item.name}} 
+                {% endfor %} 
+            </marquee>
+            <marquee behavior="scroll" direction="left">
+                {{t}}
+                {% for c in comm%}
+                |   {{c.name}}
+                    {{c.price}}
+                    {{c.day}}
+                    {{c.percent}}
+                    {{c.monthly}}
+                    {{c.yoy}}
+            {% endfor %}
+            </marquee>
+            
+            <div class="map">
+                <iframe  width="450" height="400" src="https://embed.windy.com/embed2.html?lat=37.160&lon=-99.492&detailLat=37.781&detailLon=-122.424&width=450&height=350&zoom=3&level=surface&overlay=temp&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=true&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1" frameborder="0"></iframe>
+            </div>
+            <div class="user_info">{{session["date"]}}</div>
+           
+            <h3 class="h3_dash">Dashboard</h3>
+            <div class="tpd_updates">Top Peaks Developments Current Developments: Nothing is going on on. What information should I grab?</div>
+            <div class="news">
+                <div class="Title">World News</div>
+                
+                <div class="news_link_D nl1">
+                    AL Arabia 
+                        <div class="news_1_con">   
+                            {% for a in alra%}
+                                <a href="{{a.link}}}" class="article_link_d nl1">{{a.title}}{{a.name}}</a>
+                            {% endfor %}
+                        </div>
+                </div>
+            
+                <div class="news_link_D nl1">
+                    Al Jazeera
+                    <div class="news_1_con">   
+                        {% for a in alja%}
+                            <a href="{{a.link}}}" class="article_link_d nl2">{{a.title}}{{a.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="news_link_D nl1">
+                    BBC - British Broadcasting Corporation
+                    <div class="news_1_con">   
+                        {% for a in bbc %}
+                            <a href="{{a.link}}}" class="article_link_d nl3">{{a.title}}{{a.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="news_link_D nl1">
+                    CNBC
+                    <div class="news_1_con">   
+                        {% for a in cnn %}
+                            <a href="{{a.link}}}" class="article_link_d nl4">{{a.title}}{{a.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                      
+                <div class="news_link_D nl1">
+                    CNN - Cable News Network
+                    <div class="news_1_con">   
+                        {% for a in cnn%}
+                            <a href="{{a.link}}}" class="article_link_d nl5">{{a.title}}{{a.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="news_link_D nl1">
+                    Sky News
+                    <div class="news_1_con">   
+                        {% for a in sky%}
+                            <a href="{{a.link}}}" class="article_link_d nl6">{{a.title}}{{a.name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="government">
+                <div class="Title">U.S Government News</div>
+            <div class="news_link_D nl1">
+                White House News
+                    <div class="news_1_con">     
+                        {% for w in wh %}
+                            <a href="{{w.link}}" class="article_link_d nl1">{{w.title}}<br>{{w.category}}</a>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="news_link_D nl1">
+                House News
+                    <div class="news_1_con">     
+                        {% for w in house %}
+                            <a href="" class="article_link_d nl1">{{w.title}}<br>{{w.host}}</a>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="news_link_D nl1">
+                Senate News
+                    <div class="news_1_con">     
+                        {% for w in sen %}
+                            <a href="" class="article_link_d nl1">{{w.matter}}</a>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="news_link_D nl1">
+                Securities Exchange News
+                    <div class="news_1_con">     
+                        {% for w in secEx %}
+                            <a href="{{w.link}}" class="article_link_d nl1">{{w.title}}</a>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="news_link_D nl1">
+                Center For Disease Control News
+                    <div class="news_1_con">     
+                     
+                    </div>
+            </div>
+            </div>
+
+
+            <div class="info-table">
+                <div class="Title">Commodities</div>
+                <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Day</th>
+                            <th>Percent</th>
+                            <th>Weekly</th>
+                            <th>Monthly</th>
+                            <th>YearOYear</th>
+                            <th>Date</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    {% for c in comm%}
+                        <tr>
+                            <td>{{c.name}}</td>
+                            <td>{{c.price}}</td>
+                            <td>{{c.day}}</td>
+                            <td>{{c.percent}}</td>
+                            <td>{{c.weekly}}</td>
+                            <td>{{c.monthly}}</td>
+                            <td>{{c.yoy}}</td>
+                            <td>{{c.date}}</td>
+                            <td>{{c.updated_at}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div> 
+
+                <br>
+
+            <div class="info-table">
+                <div class="Title">Vulnerabilties</div>
+                <table width="950px" class="table">
+                        <tr>
+                            <th>CVE ID</th>
+                            <th>Description</th>
+                            <th>Links</th>
+                            <th>Updated At</th>
+                        </tr>
+                    {% for cve in vul%}
+                        <tr>
+                            <td>{{cve.cve_id}}</td>
+                            <td>{{cve.description}}</td>
+                            <td width="10000px">{{cve.links}}</td>
+                            <td>{{cve.updated_at}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="info-table">
+                <div class="Title">Weather</div>
+                <table width="950px" class="table">
+                        <tr>
+                            <th>Location</th>
+                            <th>Temerature</th>
+                        </tr>
+                    {% for w in weather%}
+                        <tr>
+                            <td>{{w.location}}</td>
+                            <td>{{w.temperature}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+
+            <div class="twitterTrending">
+
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

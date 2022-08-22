@@ -1,0 +1,267 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+}
+
+.container{
+    position: absolute;
+    width: 950px;
+    height: 720px;
+    margin: 0px auto;
+    border: solid 1px white;
+    margin-top: 10%;
+}
+.information-container{
+    position: absolute;
+    margin: 16px;
+    margin-top: 100px;
+    height: 500px;
+    width: 192px;
+    border: solid 1px white;
+    color: black;
+    text-shadow: 1px 1px 2px darkgrey;
+}
+.information-box-btn{
+    padding: 5px;
+    width: 160px;
+    height: 64px;
+    border: solid 1px red;
+    background-color: white;
+    display: block;
+    margin: 16px auto;
+    text-align: center;
+}
+.information-box-text{
+    padding: 5px;
+    width: 160px;
+    height: 64px;
+    border: solid 1px red;
+    background-color: white;
+    display: block;
+    margin: 16px auto;
+    text-align: center;
+
+}
+.h3{
+    display: block;
+}
+.chatbox{
+    height: 400px;
+    width: 600px;
+    border: solid 1px red;
+    background-color: black;
+    color: white;
+    overflow-y: scroll;
+    margin: 16px auto;
+    margin-top: 100px;
+    margin-left: 250px;
+}
+.left-box{
+    width: 400px;
+    margin: 30px;
+    padding: 5px;
+    background-color: green;
+    float: left;
+    display: block;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.right-box{
+    height: 100px;
+    width: 200px;
+    margin: 40px;
+    padding: 5px;
+    background-color: blue;
+    float: right;
+}
+.text-box{
+    border: solid 1px white;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: aqua;
+    margin: 16px auto;
+    margin-left: 300px;
+}
+
+
+
+
+
+
+
+
+
+.main_container{
+    min-width: 900px;
+    max-width: 950px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    margin: 0px auto;
+    box-shadow: 2px 2px 5px rgb(58, 58, 58);
+}
+
+.nav_container{
+    background-color: black;
+    position:absolute;
+    min-width: 900px;
+    max-width: 950px;
+    width: 100%;
+    height: 75px;
+    margin: 0px auto;
+    box-shadow: 2px 2px 5px rgb(58, 58, 58);
+    border-radius: 2px;
+
+}
+.logo{
+    position: absolute;
+    text-align: left;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px 1px whitesmoke;
+    margin: 5px;
+}
+.logo_part_1{
+   font-size: 31px; 
+}
+.logo_part_2{
+    font-size: 23px;
+}
+.link_Container{
+    background-color: black;
+    float: right;
+    margin-top: 15px;
+    padding: 10px;
+   
+}
+.btn{
+    background-color: black;
+    color: white;
+    margin-top: 15px;
+    padding: 5px;
+    border: solid 1px black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    border-radius: 2px;
+    border-bottom: solid 1px white;
+}
+.btn:hover{
+    text-shadow: 1px 1px 2px white;
+    box-shadow: 2px 2px 5px white;
+}
+.blog{
+   
+}
+.blog:hover{
+   
+}
+.datacenter{
+
+}
+.softwaredev{
+
+}
+.webdev{
+
+}
+.cybersec{
+
+}
+.contact{
+
+}
+.content_container{
+    height: 500px;
+    width: 950px;
+    background-color: black;
+    position: absolute;
+    margin-top: 100px;
+    border-bottom: 2px;
+
+}
+.map{
+    margin: 0px auto;
+    float: right;
+    margin: 25px;
+    margin-top: 25px;
+    box-shadow: 1px 1px 1px white;
+    border-radius: 2px;
+    border: solid 1px black;
+}
+
+.footer_container{
+    background-color: black;
+    color: white;
+    position: absolute;
+    margin-top: 725px;
+    padding-bottom: 100px;
+    max-width: 950px;
+    width: 100%;
+    display: inline-block;
+    border-top: solid 1px white;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+.info_container{
+   margin: 0px auto;
+   margin-top: 50px;
+   float: center;
+}
+.copyright{
+    
+}
+.btc_addresss{
+    
+}
+.button_container{
+    background-color: black;
+    color: white;
+    display: inline-block;
+    float: right;
+    margin-top: 25px;
+}
+
+.privacypolicy{
+
+}
+.contact{
+
+}
+
+.globalprivacypolicies{
+
+}
+.btn2{
+    background-color: black;
+    color: white;
+    padding: 15px;
+    border: solid 1px black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    border-radius: 2px;
+}
+.btn2:hover{
+    text-shadow: 1px 1px 2px white;
+    box-shadow: 2px 2px 6px white;
+}
+
+
+
+.navContainerTpd{
+    z-index: 15;
+    color: white;
+    position: absolute;
+    margin-top:100px; 
+    width: 950px;
+    text-align: center;
+}
+
+.btnTpd{
+    color: white;
+    text-decoration: none;
+}
