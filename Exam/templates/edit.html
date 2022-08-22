@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css_001.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_001.css') }}">
+    
+</head>
+<body>
+    <div class="main_container">
+        <a href="/dashboard" class="tv_show">Tv Shows</a>
+        <a href="/logout" class="logout">Logout</a>
+        {% for item in show%}
+        <h2>Edit : {{item.title}}</h2>
+            <form action="/edit_process" class="edit_show" method="post">
+                <label for="">Title : </label>
+                <input type="text" class="" name="title" value="{{item.title}}">
+                <label for="">Network : </label>
+                <input type="text" class="" name="network" value ="{{item.network}}">
+                <label for="">Release Date : </label>
+                <input type="date" name="release_date" id="" value="{{item.release_date}}">
+                <label for="">Description : </label>
+                <textarea name="description" id="" cols="30" rows="10" value="{{item.description}}"></textarea>
+                <input type="submit" value="Update">
+            </form>
+        {% endfor%}
+    </div>
+    <div class="error_messages">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

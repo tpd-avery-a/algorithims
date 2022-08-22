@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css_001.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_001.css') }}">
+    
+</head>
+<body>
+    <div class="main_container">
+        <div class="register_container">
+            <h2>Register Here : </h2>
+            <form action="/register_process" class="register" method="post">
+                    <label for="">First Name : </label>
+                    <input type="text" class="fname" name="fname">
+                    <label for="">Last Name : </label>
+                    <input type="text" class="lname" name="lname">
+                    <label for="">Email : </label>
+                    <input type="text" class="email" name="email">
+                    <label for="">Re-Enter Email : </label>
+                    <input type="text" class="e2" name="e2">
+                    <label for="">Password : </label>
+                    <input type="password" class="pword" name="pword">
+                    <label for="">Re-Enter Password : </label>
+                    <input type="password" class="p2" name="p2">
+                    <input type="submit" value="Register">
+            </form>
+        </div>
+        <div class="login_container">
+            <h2>Login Here : </h2>
+            <form action="/login_process" class="login" method="post">
+                    <label for="">Email : </label>
+                    <input type="text" name="email" id="">
+                    <label for="">Password : </label>
+                    <input type="password" name="pword" id="">
+                    <input type="submit" value="Login">
+            </form>
+        </div>
+        <div class="error_messages">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</body>
+</html>

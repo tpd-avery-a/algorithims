@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css_001.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dash_001.css') }}">
+    
+</head>
+<body>
+    <div class="main_container">  
+            <div class="nav_con">
+                <div class="user_control">
+                    <a href="/dashboard" class="tv_show">Tv Shows</a>
+                    <a href="/logout" class="logout">Logout</a>
+                </div> 
+                Hi {{session["username"]}}
+            
+            </div>
+
+    
+            <div class="table_con">
+                <table class="shows">
+                    <thead>
+                        <th>Title</th>
+                        <th>Network</th>
+                        <th>Release Date</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        {% for item in shows %}
+                        <tr>
+                            <td>{{item.title}}</td>
+                            <td>{{item.network}}</td>
+                            <td>{{item.release_date}}</td>
+                            <td><a href="/show/{{item.id}}" class="show">Show</a> | <a href="/edit/{{item.id}}" class="edit">Edit</a> | <a href="/delete/{{item.id}}" class="delete">Delete</a> </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="/new" class="new">Create Show</a>
+
+            <div class="error_messages">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>  
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Showing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css_001.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='show_001.css') }}">
+    
+</head>
+<body>
+    <div class="main_container"> 
+        <div class="nav_con">
+            <div class="user_control">
+                <a href="/dashboard" class="tv_show">Tv Shows</a>
+                <a href="/logout" class="logout">Logout</a>
+        </div> 
+
+        <div class="show_container">
+            {% for item in show%}
+                <div class="show_item">
+                    <div class="title">Title : {{item.title}}</div>
+                    <div class="release_date">Release Date : {{item.release_date}}</div>
+                    <div class="description">Description : {{item.description}}</div>
+                    <div class="post_by">Posted By : {{item.created_by}} </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="error_messages">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</body>
+</html>

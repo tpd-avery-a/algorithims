@@ -1,0 +1,24 @@
+input{
+    display: inline-block;
+    margin: 0px auto;
+}
+label{
+    display: inline-block;
+    margin: 0px auto;
+    width: 250px;
+}
+.register_container{
+    border: solid 1px black;
+    margin: 0px auto;
+    width: 500px;
+}
+.login_container{
+    border: solid 1px black;
+    margin: 0px auto;
+    width: 500px;
+}
+
+body{
+    background-color: black;
+    color: white;
+}

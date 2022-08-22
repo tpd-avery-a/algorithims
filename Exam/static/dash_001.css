@@ -1,0 +1,31 @@
+.nav_con{
+    width: 950px;
+    height: 100px;
+    border: solid 1px whitesmoke;
+}
+.user_control{
+    border: solid 1px whitesmoke;
+    width: 350px;
+    text-align: center;
+    float: right;
+    margin-top: 50px;
+}
+.tv_show{
+    padding: 8px;
+}
+.logout{
+    padding: 8px;
+}
+
+
+.table_con{
+    margin: 0px auto;
+    border: solid 1px black;
+    width: 700px;
+}
+
+.error_messages{
+    z-index: 5;
+    font-size: 50px;
+    color: black;
+}

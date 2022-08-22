@@ -1,0 +1,16 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+a{
+    text-decoration: none;
+}
+body{
+
+}
+.main_container{
+    width: 950px;
+    margin: 0px auto;
+    border: solid 1px whitesmoke;
+}
